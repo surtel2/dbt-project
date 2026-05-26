@@ -1,3 +1,5 @@
+
+
 with customers as (
 
     select * from {{ ref('stg_jaffle_shop__customers') }}
@@ -5,10 +7,17 @@ with customers as (
 ),
 
 orders as (
-
-    select * from {{ ref('stg_jaffle_shop__orders') }}
-
+    select
+         o.*,
+         p.sum_amount
+    from {{ ref('stg_jaffle_shop__orders') }} as o
+        LEFT JOIN {{ ref('fct_orders') }} as p
+            ON o.order_id = p.order_id
 ),
+
+-- payments as (
+--     SELECT * FROM {{ ref('fct_orders') }}
+-- ),
 
 customer_orders as (
 
@@ -17,7 +26,8 @@ customer_orders as (
 
         min(order_date) as first_order_date,
         max(order_date) as most_recent_order_date,
-        count(order_id) as number_of_orders
+        count(order_id) as number_of_orders,
+        SUM(sum_amount) as lifetime_value
 
     from orders
 
@@ -29,17 +39,22 @@ customer_orders as (
 final as (
 
     select
-        customers.customer_id,
-        customers.first_name,
-        customers.last_name,
+        c.customer_id,
+        c.first_name,
+        c.last_name,
         customer_orders.first_order_date,
         customer_orders.most_recent_order_date,
-        coalesce(customer_orders.number_of_orders, 0) as number_of_orders
+        coalesce(customer_orders.number_of_orders, 0) as number_of_orders,
+        customer_orders.lifetime_value
+        
 
-    from customers
+    from customers c
 
     left join customer_orders using (customer_id)
 
 )
 
 select * from final
+
+
+-- select sum(lifetime_value) from final
