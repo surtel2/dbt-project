@@ -5,3 +5,6 @@ sources:
     tables: 
       - name: customers
       - name: orders
+      - name: stripe.payment
+
+      # dbt-tutorial.stripe.payment
