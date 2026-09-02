@@ -7,6 +7,6 @@ SELECT
     amount,
     created,
     _batched_at
-FROM dbt-tutorial.stripe.payment
+FROM {{ source('stripe', 'payment') }}
 
 
