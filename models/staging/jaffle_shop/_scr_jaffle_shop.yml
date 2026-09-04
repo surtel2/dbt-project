@@ -24,3 +24,4 @@ sources:
       - name: payment
 
       # dbt-tutorial.stripe.payment
+models/staging/jaffle_shop/_src_jaffle_shop.yml$0
