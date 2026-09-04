@@ -17,11 +17,16 @@ sources:
           freshness: null
       - name: orders
 
-  - name: stripe
-    database: dbt-tutorial
-    schema: stripe
-    tables:
-      - name: payment
+  # - name: stripe
+  #   database: dbt-tutorial
+  #   schema: stripe
+  #   tables:
+  #     - name: payment
 
       # dbt-tutorial.stripe.payment
-models/staging/jaffle_shop/_src_jaffle_shop.yml$0
+# sources:
+#   - name: jaffle_shop
+#     database: dbt-tutorial
+#     tables:
+#       - name: customers
+#       - name: orders
