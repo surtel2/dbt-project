@@ -1,12 +1,25 @@
+with 
 
-SELECT
-    id,
-    orderid,
-    paymentmethod,
-    status,
-    amount,
-    created,
-    _batched_at
-FROM {{ source('stripe', 'payment') }}
+source as (
 
+    select * from {{ source('stripe', 'payment') }}
 
+),
+
+renamed as (
+
+    select
+        id              as payment_id,
+        orderid         as order_id,
+        paymentmethod   as payment_method,
+        status          as payment_status,
+        amount / 100    as amount, --stored in cents, convert it in dollards
+        created         as created_at,
+        _batched_at
+
+    from source
+
+)
+
+select * from renamed
+order by order_id
