@@ -1,0 +1,34 @@
+models:
+  - name: stg_stripe__payments
+    description: The grain of this table is one unique payment.
+    columns:
+      - name: payment_id
+        description: Primary key for the customers table.
+        data_tests:
+          - unique
+          - not_null
+      - name: payment_status
+        description: "{{ doc('payment_status')}}"
+        data_tests:
+          - accepted_values:
+              values: ['success', 'fail']
+      - name: created_at
+        description: Date when payment attempt was made.
+        data_tests:
+          - not_null
+      - name: _batched_at
+        description: Date when row was batched in query.
+        data_tests:
+          - not_null
+      - name: order_id
+        description: Not primary key here. Order_id here is the same key as in jaffle_shop orders table order_id.
+        data_tests:
+          - relationships:
+              to: ref('stg_jaffle_shop__orders')
+              field: order_id
+
+          
+
+      
+          
+          
